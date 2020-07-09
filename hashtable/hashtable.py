@@ -21,7 +21,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        self.array = [None] * capacity
+        self.capacity = capacity
 
 
     def get_num_slots(self):
@@ -53,7 +54,16 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-        # Your code here
+        # Define Constants
+        FNV_prime = 1099511628211
+        offset_basis = 14695981039346656037
+
+        #FNV-1a Hash Function
+        hash = offset_basis
+        for c in key: # loop over letters
+            hash = hash ^ ord(c) # ^ Sets each bit to 1 if only one of two bits is 1 (not sure what this bitwise operator does)
+            hash = hash * FNV_prime
+        return hash
 
 
     def djb2(self, key):
@@ -70,8 +80,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity 
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -81,7 +91,24 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        """Add a value to our array by its key"""
+        index = self.hash_index(key)
+        if self.array[index] is not None:
+            # If this already contains some values, we may have to update
+            for kvp in self.array[index]: # iterate over key value pairs
+                if kvp[0] == key: # if key is found
+                    kvp[1] = value  # update current value to the new value
+                    break
+            else:
+                # If no breaks was hit in the for loop, it 
+                # means that no existing key was found, 
+                # so we can simply just add it to the end.
+                self.array[index].append([key, value])
+        else:
+            # This index is empty. We should initiate 
+            # a list and append our key-value-pair to it.
+            self.array[index] = []
+            self.array[index].append([key, value])
 
 
     def delete(self, key):
@@ -92,7 +119,21 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key) # initiate index with hash func
+        if self.array[index] is None: # if nothing here, raise err
+            raise KeyError()
+        else:
+            # Loop through all key-value-pairs
+            # and find if our key exist. If it does 
+            # then return its value.
+            for kvp in self.array[index]: # loop over all key value pairs
+                if kvp[0] == key: # if this key exists
+                    kvp[1] = None # delete it
+                    return kvp[1] # return deleted one
+            
+            # If no return was done during loop,
+            # it means key didn't exist.
+            raise KeyError()
 
 
     def get(self, key):
@@ -103,7 +144,21 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        """Get a value by key"""
+        index = self.hash_index(key)
+        if self.array[index] is None:
+            raise KeyError()
+        else:
+            # Loop through all key-value-pairs
+            # and find if our key exist. If it does 
+            # then return its value.
+            for kvp in self.array[index]:
+                if kvp[0] == key:
+                    return kvp[1]
+            
+            # If no return was done during loop,
+            # it means key didn't exist.
+            raise KeyError()
 
 
     def resize(self, new_capacity):

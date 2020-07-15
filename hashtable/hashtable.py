@@ -44,6 +44,17 @@ class HashTable:
 
         Implement this.
         """
+        total = 0
+        for i in self.array:
+            if self.array[i] is not None:
+                # iterate over LL, adding to total
+                current = self.array[i].head
+                while current is not None:
+                    total += 1 # current is there, so increment
+                    current = current.next # move to next
+                # at the end of LL
+                break
+        return total / self.capacity
         
 
 
@@ -100,21 +111,21 @@ class HashTable:
 
         if self.array[index] is not None: 
             # If this already contains some values, we may have to update
-            for kvp in self.array[index]: # iterate over key value pairs
-                if kvp[0] == key: # if key is found
-                    kvp[1] = value  # update current value to the new value
-                    break
-            else:
-                # If no breaks was hit in the for loop, it 
-                # means that no existing key was found, 
-                # so we can simply just add it to the end.
-                self.array[index].append([key, value])
+            current = self.array[index].head
+            while current is not None:
+                print(current.value[0])
+                if current.value[0] == key: # if key is found
+                    current.value = (key, value) # update value
+                    return current.value[1] # return value
+            
+                current = current.next # key wasn't found, so move to next
+            # if while loop ends, there is no head. just add the kvp
+            self.array[index].insert_at_tail([key, value])
         else:
             # This index is empty. We should initiate 
-            # a list and append our key-value-pair to it.
-            self.array[index] = []
-            self.array[index].append([key, value])
-        # print("self.array[index]", self.array[index])
+            # a LL and add our key-value-pair to it.
+            self.array[index] = LinkedList()
+            self.array[index].insert_at_tail((key, value))
 
 
     def delete(self, key):
@@ -132,11 +143,12 @@ class HashTable:
             # Loop through all key-value-pairs
             # and find if our key exist. If it does 
             # then return its value.
-            # for kvp in self.array[index]: # loop over all key value pairs
-            #     if kvp[0] == key: # if this key exists
-            #         kvp[1] = None # delete it
-            #         return kvp[1] # return deleted one
-            
+            current = self.array[index].head
+            print(current.value)
+            while current is not None: # loop over all key value pairs
+                if current.value[0] == key: # if this key exists
+                    return self.array[index].delete(current.value) # delete it
+                current = current.next # next node
             
             # If no return was done during loop,
             # it means key didn't exist.
@@ -162,13 +174,13 @@ class HashTable:
             # then return its value.
             current = self.array[index].head
             while current is not None:
-                if current[0] == key:
-                    return current[1]
+                if current.value[0] == key:
+                    return current.value[1]
             
                 current = current.next
             # If no return was done during loop,
             # it means key didn't exist.
-            raise KeyError()
+            return None
 
 
     def resize(self, new_capacity):

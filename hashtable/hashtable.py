@@ -196,18 +196,19 @@ class HashTable:
         for i in range(len(self.array)):
             if self.array[i] is None:
                 continue
-            
             # Since our list is now a different length,
             # we need to re-add all of our values to 
             # the new list for its hash to return correct
             # index.
-            for kvp in self.array[i]:
-                ht2.put(kvp[0], kvp[1])
+            current = self.array[i].head 
+            while current is not None:
+                (key, val) = current.value # destructure key, val
+                ht2.put(key, val) # add to new hash table
+                current = current.next # next kvp
         # Finally we just replace our current list with 
         # the new list of values that we created in ht2.
-
         self.array = ht2.array
-        self.capacity = new_capacity
+        self.capacity = new_capacity # replace capacity as well so our hash works correctly
         return self.array
 
 

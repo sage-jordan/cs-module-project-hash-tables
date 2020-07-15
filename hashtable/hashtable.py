@@ -161,7 +161,6 @@ class HashTable:
             # and find if our key exist. If it does 
             # then return its value.
             current = self.array[index].head
-​
             while current is not None:
                 if current[0] == key:
                     return current[1]
@@ -265,111 +264,109 @@ get("fred")  # hashes to 0 --> return None
 delete("baz")
 ​
 '''
-​
 # Insert a LL into the hash table, when you put something in
 # hash table main data structure: [LL, LL, LL, None, LL, None, None]
-​
+
 # how to make the LL work with our hash table?
 ## ensure each node has a key as well as a value
 ## change methods to use keys, not just values, where necessary
 ## write a new method, maybe insert_or_overwrite
 ### search for the key, if found, overwrite
 ### otherwise, add a new node
-​
-​
+
 # generic ListNode and LinkedList
-​
+
 class ListNode:
     def __init__(self, value):
         self.value = value
         self.next = None
-​
+
 class LinkedList:
     def __init__(self):
         self.head = None
-​
+
     def find(self, value):
         current = self.head
-​
+
         while current is not None:
             if current.value == value:
                 return current
-        
+
             current = current.next
-​
+
         return None
-​
+
     def insert_at_tail(self, value):
         node = ListNode(value)
-​
+
         # if there is no head
         if self.head is None:
             self.head = node
         else:
             current = self.head
-​
+
             while current.next is not None:
                 current = current.next
             current.next = node
-​
+
     def delete(self, value):
         current = self.head
-​
+
         # if there is nothing to delete
         if current is None:
             return None
-​
+
         # when deleting head
         if current.value == value:
             self.head = current.next
             return current
-​
+
         # when deleting something else
         else:
             previous = current
             current = current.next
-​
+
             while current is not None:
                 if current.value == value: # found it!
                     previous.next = current.next  # cut current out!
                     return current # return our deleted node
-​
+
                 else:
                     previous = current
                     current = current.next
-​
+
             return None # if we got here, nothing was found!
-​
-​
-​
-​
+
+
+
+
 '''
-​
+
 0   A  ->  E  -> O -> P
 1   B  ->  F  -> I -> J -> K -> L
 2   C  ->  G  -> M
 3   D  ->  H  -> N -> Q -> R
-​
+
 get(A)
 get(H)
-​
-​
+
+
 Hash Table Load Factor
 number of things / length of array (number of buckets)
-​
+
 18/4 = 9/2 = 4.5
-​
+
 Load factor < 0.7, aka 70%
-​
+
 0  A
 1  B -> C
 2 
 3  
-​
-​
+
+
 # How to resize??
 make a new array, with double the capacity, to reduce how much often we need to do this
-​
+
 0
 1
 2  B
@@ -378,19 +375,19 @@ make a new array, with double the capacity, to reduce how much often we need to 
 5
 6  C
 7
-​
+
 # How to keep track of how many things we've inserted?
 ## keep a counter, every time you insert
 ### if you overwrite, that's not a new thing
-​
-​
+
+
 # Shrinking, based on the load factor
 When you delete, also update your tracker
 if load factor < 0.2, rehash! 
 Make a new array, half the size
-​
+
 Minimum size 8, don't halve below 8
-​
+
 STRETCH GOAL
-​
+
 '''

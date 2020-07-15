@@ -20,7 +20,7 @@ class HashTable:
     Implement this.
     """
 
-    def __init__(self, capacity):
+    def __init__(self, capacity): 
         self.array = [None] * capacity
         self.capacity = capacity
 
@@ -35,7 +35,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return len(self.array)
 
 
     def get_load_factor(self):
@@ -44,7 +44,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
 
 
     def fnv1(self, key):
@@ -92,8 +92,9 @@ class HashTable:
         Implement this.
         """
         """Add a value to our array by its key"""
-        index = self.hash_index(key)
-        if self.array[index] is not None:
+        index = self.hash_index(key) # hash key
+
+        if self.array[index] is not None: 
             # If this already contains some values, we may have to update
             for kvp in self.array[index]: # iterate over key value pairs
                 if kvp[0] == key: # if key is found
@@ -109,6 +110,7 @@ class HashTable:
             # a list and append our key-value-pair to it.
             self.array[index] = []
             self.array[index].append([key, value])
+        # print("self.array[index]", self.array[index])
 
 
     def delete(self, key):
@@ -145,7 +147,10 @@ class HashTable:
         Implement this.
         """
         """Get a value by key"""
+        print("key", key)
         index = self.hash_index(key)
+        print("index", index)
+        print("capacity", self.capacity)
         if self.array[index] is None:
             raise KeyError()
         else:
@@ -168,7 +173,26 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        """Double the list length and re-add values"""
+        ht2 = HashTable(new_capacity)
+        # print(self.array)
+        for i in range(len(self.array)):
+            if self.array[i] is None:
+                continue
+            
+            # Since our list is now a different length,
+            # we need to re-add all of our values to 
+            # the new list for its hash to return correct
+            # index.
+            for kvp in self.array[i]:
+                ht2.put(kvp[0], kvp[1])
+        # Finally we just replace our current list with 
+        # the new list of values that we created in ht2.
+
+        self.array = ht2.array
+        self.capacity = new_capacity
+        return self.array
+
 
 
 

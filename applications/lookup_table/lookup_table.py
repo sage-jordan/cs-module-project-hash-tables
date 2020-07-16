@@ -13,16 +13,22 @@ def slowfun_too_slow(x, y):
 def inverse_root(n):
     return 1 / math.sqrt(n)
 
-
+cache = {}
 def slowfun(x, y):
     """
     Rewrite slowfun_too_slow() in here so that the program produces the same
     output, but completes quickly instead of taking ages to run.
     """
-    v = math.sqrt(x) * math.sqrt(y)
-    v %= 982451653
-
-    return v 
+    def slowfun_inner(x, y):
+        tup = (x, y)
+        if tup not in cache:
+            v = math.pow(x, y)
+            v = math.factorial(v)
+            v //= (x + y)
+            v %= 982451653
+            cache[tup] = v
+        return cache[tup]
+    return slowfun_inner(x,y)
 
 
 

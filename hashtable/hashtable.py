@@ -109,6 +109,10 @@ class HashTable:
         """Add a value to our array by its key"""
         index = self.hash_index(key) # hash key
 
+        lf = self.get_load_factor()
+        if lf > 0.7:
+            self.resize(self.capacity * 2)
+
         if self.array[index] is not None: 
             # If this already contains some values, we may have to update
             current = self.array[index].head
@@ -136,6 +140,9 @@ class HashTable:
 
         Implement this.
         """
+        lf = self.get_load_factor()
+        if lf < 0.2:
+            self.resize(self.capacity / 2)
         index = self.hash_index(key) # initiate index with hash func
         if self.array[index] is None: # if nothing here, raise err
             raise KeyError()

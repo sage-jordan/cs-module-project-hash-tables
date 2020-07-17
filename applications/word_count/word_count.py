@@ -1,6 +1,6 @@
 def word_count(s):
     # list of special characters
-    # specs = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '\', '|', '[', ']', '{', '}', '(', ')', '*', '^', '&']
+    specs = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '|', '[', ']', '{', '}', '(', ')', '*', '^', '&']
     # separate words in string
     if len(s) < 1:
         return {}
@@ -16,9 +16,12 @@ def word_count(s):
         # ensure character is a letter
         for character in word:
             print("character: ",character)
-            if character.isalpha() != True:
+            if character.isalpha() or character == "'":
+                # if the word is in the dictionary, increment its count 
+                continue
+            else:
                 print(character)
-                word.replace(character, '')
+                word = word.replace(character, '')
                 print("replaced word: ",word)
         # if the word is in the dictionary, increment its count
         if len(word) >= 1:

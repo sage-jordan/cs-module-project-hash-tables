@@ -10,8 +10,6 @@ def slowfun_too_slow(x, y):
 
     return v
 
-def inverse_root(n):
-    return 1 / math.sqrt(n)
 
 cache = {}
 def slowfun(x, y):

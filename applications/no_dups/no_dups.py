@@ -1,5 +1,14 @@
 def no_dups(s):
-    # Your code here
+    newS = s.split(' ')
+    counts = {}
+    newString = ''
+    for word in newS:
+        if word not in counts and word != ' ':
+            counts[word] = word
+            newString = f'{newString} {word}'
+            print(newString)
+    print("newString: ",newString, "here")
+    return newString.strip()
 
 
 
